@@ -9,7 +9,17 @@ let chatHistory = getCookie("chatHistory") ? JSON.parse(getCookie("chatHistory")
 
 // Display chat history
 function displayChat() {
-  chatDiv.innerHTML = chatHistory.map(msg => `<p><b>${msg.role}:</b> ${msg.content}</p>`).join("");
+  chatDiv.innerHTML = chatHistory
+    .map(msg => `
+      <div class="mb-4">
+        <div class="${msg.role === "user" ? "text-right" : "text-left"}">
+          <span class="inline-block px-4 py-2 rounded-lg ${msg.role === "user" ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-800"}">
+            ${msg.content}
+          </span>
+        </div>
+      </div>
+    `)
+    .join("");
   chatDiv.scrollTop = chatDiv.scrollHeight; // Auto-scroll to the bottom
 }
 
@@ -22,7 +32,7 @@ async function sendMessage(message) {
       "Authorization": `Bearer ${API_KEY}`
     },
     body: JSON.stringify({
-      model: "deepseek-chat", // Model name (confirmed from the curl command)
+      model: "deepseek-chat", // Model name
       messages: [
         { role: "system", content: "You are a helpful assistant." }, // System message
         ...chatHistory, // Include chat history
