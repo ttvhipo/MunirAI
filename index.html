@@ -1,10 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DeepSeek Chat</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Highlight.js CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css">
+  <!-- Highlight.js JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
   <style>
     /* Custom gradient background */
     body {
@@ -91,6 +98,64 @@
     .dark-mode #custom-popup-content {
       background: #374151;
       color: #F3F4F6;
+    }
+
+    /* Additional styles for formatted content */
+    .message-ai h3 {
+      font-size: 1.25rem; /* text-lg */
+      font-weight: bold; /* font-bold */
+      margin-top: 1rem; /* mt-4 */
+      margin-bottom: 0.5rem; /* mb-2 */
+    }
+    .message-ai ul {
+      list-style-type: disc; /* list-disc */
+      padding-left: 1.5rem; /* pl-6 */
+    }
+    .message-ai li {
+      margin-bottom: 0.5rem; /* Add spacing between list items */
+    }
+    .message-ai br {
+      display: block;
+      margin-bottom: 0.5rem; /* Add spacing after line breaks */
+    }
+
+    /* Styles for code blocks */
+    .code-block {
+      position: relative;
+      background: #1f1f1f;
+      color: #ffffff;
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      margin: 0.5rem 0;
+      font-family: "Courier New", monospace;
+      font-size: 0.875rem; /* Smaller font size */
+      overflow-x: auto;
+    }
+    .code-block pre {
+      margin: 0;
+      white-space: pre-wrap; /* Ensure code wraps */
+      word-wrap: break-word; /* Prevent overflow */
+    }
+    .copy-button {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      background: #3b82f6;
+      color: white;
+      border: none;
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.25rem;
+      cursor: pointer;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+    .copy-button:hover {
+      background: #2563eb;
+    }
+    .copy-button:active {
+      background: #1e40af;
     }
   </style>
 </head>
