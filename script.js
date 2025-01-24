@@ -47,6 +47,55 @@ nameSubmit.addEventListener("click", () => {
   }
 });
 
+// Function to format the AI's response
+function formatResponse(response) {
+  // Replace code blocks (```) with <pre><code> tags
+  response = response.replace(/```(\w+)?\n([\s\S]*?)```/g, (match, language, code) => {
+    return `
+      <div class="code-block">
+        <button class="copy-button" onclick="copyCode(this)">
+          <span>Copy</span>
+        </button>
+        <pre><code class="language-${language || 'plaintext'}">${code.trim()}</code></pre>
+      </div>
+    `;
+  });
+
+  // Replace headers (###) with <h3> tags
+  response = response.replace(/### (.*)/g, "<h3 class='text-lg font-bold mt-4 mb-2'>$1</h3>");
+
+  // Replace bold text (**) with <strong> tags
+  response = response.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+
+  // Replace bullet points (-) with <li> tags
+  response = response.replace(/^- (.*)/gm, "<li>$1</li>");
+
+  // Wrap groups of <li> tags in <ul> tags
+  response = response.replace(/(<li>.*<\/li>)/g, "<ul class='list-disc pl-6'>$1</ul>");
+
+  // Replace line breaks with <br> tags
+  response = response.replace(/\n/g, "<br>");
+
+  // Replace --- with <hr> tags for horizontal rules
+  response = response.replace(/---/g, "<hr class='my-4 border-t border-gray-300'>");
+
+  // Preserve LaTeX expressions (e.g., \( \text{Zn} \rightarrow \text{Zn}^{2+} + 2e^- \))
+  response = response.replace(/\\\((.*?)\\\)/g, "\\($1\\)");
+
+  return response;
+}
+
+// Function to copy code to clipboard
+function copyCode(button) {
+  const codeBlock = button.nextElementSibling.textContent;
+  navigator.clipboard.writeText(codeBlock).then(() => {
+    button.innerHTML = "<span>Copied!</span>";
+    setTimeout(() => {
+      button.innerHTML = "<span>Copy</span>";
+    }, 2000);
+  });
+}
+
 // Display chat history
 function displayChat() {
   chatDiv.innerHTML = chatHistory
@@ -54,12 +103,23 @@ function displayChat() {
       <div class="mb-4">
         <div class="${msg.role === "user" ? "text-right" : "text-left"}">
           <span class="inline-block px-4 py-2 rounded-lg ${msg.role === "user" ? "bg-blue-500 text-white message-user" : "bg-gray-200 text-gray-800 message-ai"}">
-            <strong>${msg.role === "user" ? userName : "Munir"}:</strong> ${msg.content}
+            <strong>${msg.role === "user" ? userName : "Munir"}:</strong> ${msg.role === "user" ? msg.content : formatResponse(msg.content)}
           </span>
         </div>
       </div>
     `)
     .join("");
+
+  // Highlight code blocks
+  document.querySelectorAll('pre code').forEach((block) => {
+    hljs.highlightBlock(block);
+  });
+
+  // Trigger MathJax to render LaTeX expressions
+  if (window.MathJax) {
+    MathJax.typesetPromise();
+  }
+
   chatDiv.scrollTop = chatDiv.scrollHeight; // Auto-scroll to the bottom
 }
 
