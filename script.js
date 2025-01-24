@@ -85,6 +85,8 @@ function handleKeyPress(event) {
 themeToggle.addEventListener("click", () => {
   isDarkMode = !isDarkMode;
   document.body.classList.toggle("dark-mode", isDarkMode);
+  document.querySelector(".chat-box").classList.toggle("dark-mode", isDarkMode);
+  document.querySelector(".input-box").classList.toggle("dark-mode", isDarkMode);
   themeToggle.textContent = isDarkMode ? "☀️" : "🌙";
 });
 
