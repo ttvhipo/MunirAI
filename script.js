@@ -4,29 +4,44 @@ const API_URL = "https://api.deepseek.com/chat/completions"; // Correct API endp
 const chatDiv = document.getElementById("chat");
 const inputField = document.getElementById("input");
 const themeToggle = document.getElementById("theme-toggle");
-const nameModal = document.getElementById("name-modal");
+const customPopup = document.getElementById("custom-popup");
 const nameInput = document.getElementById("name-input");
 const nameSubmit = document.getElementById("name-submit");
 
 let userName = "";
-let isDarkMode = false;
+let isDarkMode = localStorage.getItem("darkMode") === "true"; // Load dark mode preference
 
-// Load chat history from cookies
-let chatHistory = getCookie("chatHistory") ? JSON.parse(getCookie("chatHistory")) : [];
+// Load chat history from localStorage
+let chatHistory = JSON.parse(localStorage.getItem("chatHistory")) || [];
 
-// Show name prompt if no name is set
-if (!getCookie("userName")) {
-  nameModal.classList.remove("hidden");
+// Show custom popup if no name is set
+if (!localStorage.getItem("userName")) {
+  customPopup.style.display = "flex"; // Show the popup
 } else {
-  userName = getCookie("userName"); // Load saved name
+  userName = localStorage.getItem("userName"); // Load saved name
+}
+
+// Apply dark mode on page load
+if (isDarkMode) {
+  document.body.classList.add("dark-mode");
+  document.querySelector(".chat-box").classList.add("dark-mode");
+  document.querySelector(".input-box").classList.add("dark-mode");
+  document.querySelector(".chat-window").classList.add("dark-mode");
+  document.querySelector("#input").classList.add("dark-mode");
+  themeToggle.textContent = "☀️"; // Sun icon for dark mode
 }
 
 // Handle name submission
 nameSubmit.addEventListener("click", () => {
   userName = nameInput.value.trim();
+  console.log("Submitting name:", userName); // Debugging
+
   if (userName) {
-    setCookie("userName", userName, 365); // Save name for 1 year
-    nameModal.classList.add("hidden"); // Hide the modal
+    localStorage.setItem("userName", userName); // Save name to localStorage
+    console.log("Name saved to localStorage:", userName); // Debugging
+
+    customPopup.style.display = "none"; // Hide the popup
+    console.log("Popup hidden"); // Debugging
   } else {
     alert("Please enter a valid name.");
   }
@@ -76,8 +91,8 @@ async function sendMessage(message) {
   // Add AI response to chat history
   chatHistory.push({ role: "assistant", content: aiResponse });
 
-  // Save chat history to cookies
-  setCookie("chatHistory", JSON.stringify(chatHistory), 7); // Expires in 7 days
+  // Save chat history to localStorage
+  localStorage.setItem("chatHistory", JSON.stringify(chatHistory));
 
   // Display updated chat
   displayChat();
@@ -100,29 +115,13 @@ themeToggle.addEventListener("click", () => {
   document.body.classList.toggle("dark-mode", isDarkMode);
   document.querySelector(".chat-box").classList.toggle("dark-mode", isDarkMode);
   document.querySelector(".input-box").classList.toggle("dark-mode", isDarkMode);
+  document.querySelector(".chat-window").classList.toggle("dark-mode", isDarkMode);
   document.querySelector("#input").classList.toggle("dark-mode", isDarkMode);
   themeToggle.textContent = isDarkMode ? "☀️" : "🌙";
+
+  // Save dark mode preference to localStorage
+  localStorage.setItem("darkMode", isDarkMode);
 });
-
-// Cookie functions
-function setCookie(name, value, days) {
-  const date = new Date();
-  date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-  const expires = "expires=" + date.toUTCString();
-  document.cookie = `${name}=${value};${expires};path=/`;
-}
-
-function getCookie(name) {
-  const cookieName = name + "=";
-  const cookies = document.cookie.split(";");
-  for (let i = 0; i < cookies.length; i++) {
-    let cookie = cookies[i].trim();
-    if (cookie.startsWith(cookieName)) {
-      return cookie.substring(cookieName.length, cookie.length);
-    }
-  }
-  return "";
-}
 
 // Display initial chat history
 displayChat();
