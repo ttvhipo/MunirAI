@@ -17,6 +17,8 @@ let chatHistory = getCookie("chatHistory") ? JSON.parse(getCookie("chatHistory")
 // Show name prompt if no name is set
 if (!getCookie("userName")) {
   nameModal.classList.remove("hidden");
+} else {
+  userName = getCookie("userName"); // Load saved name
 }
 
 // Handle name submission
@@ -24,7 +26,7 @@ nameSubmit.addEventListener("click", () => {
   userName = nameInput.value.trim();
   if (userName) {
     setCookie("userName", userName, 365); // Save name for 1 year
-    nameModal.classList.add("hidden");
+    nameModal.classList.add("hidden"); // Hide the modal
   } else {
     alert("Please enter a valid name.");
   }
