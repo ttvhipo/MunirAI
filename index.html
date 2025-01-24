@@ -16,14 +16,40 @@
       margin: 0;
       padding: 20px;
     }
+
+    /* Dark mode styles */
+    .dark-mode {
+      background: linear-gradient(135deg, #1F2937, #111827);
+    }
+    .dark-mode .chat-box {
+      background-color: #374151;
+      color: #F3F4F6;
+    }
+    .dark-mode .input-box {
+      background-color: #4B5563;
+      border-color: #6B7280;
+    }
+    .dark-mode .message-user {
+      background-color: #3B82F6;
+      color: #FFFFFF;
+    }
+    .dark-mode .message-ai {
+      background-color: #6B7280;
+      color: #FFFFFF;
+    }
   </style>
 </head>
-<body>
-  <div class="w-full max-w-2xl bg-white rounded-lg shadow-lg overflow-hidden flex flex-col">
+<body class="dark:bg-gray-900">
+  <div class="w-full max-w-2xl bg-white rounded-lg shadow-2xl overflow-hidden flex flex-col chat-box">
     <!-- Chat Header -->
-    <div class="bg-gradient-to-r from-blue-500 to-blue-600 p-4">
-      <h1 class="text-white text-2xl font-bold">DeepSeek Chat</h1>
-      <p class="text-white text-sm">AI-powered conversations</p>
+    <div class="bg-gradient-to-r from-blue-500 to-blue-600 p-4 flex justify-between items-center">
+      <div>
+        <h1 class="text-white text-2xl font-bold">DeepSeek Chat</h1>
+        <p class="text-white text-sm">AI-powered conversations</p>
+      </div>
+      <button id="theme-toggle" class="p-2 bg-white rounded-full shadow-md">
+        🌙
+      </button>
     </div>
 
     <!-- Chat Window -->
@@ -32,7 +58,7 @@
     </div>
 
     <!-- Input Bar -->
-    <div class="p-4 bg-white border-t border-gray-200">
+    <div class="p-4 bg-white border-t border-gray-200 input-box">
       <input
         id="input"
         type="text"
