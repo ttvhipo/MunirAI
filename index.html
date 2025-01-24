@@ -42,6 +42,10 @@
       color: #F3F4F6;
       border-color: #6B7280;
     }
+    .dark-mode .chat-window {
+      background-color: #4B5563; /* Match input bar color */
+      color: #F3F4F6; /* Light text color for readability */
+    }
 
     /* Fixed chat box size */
     .chat-container {
@@ -63,8 +67,8 @@
       border-top: 1px solid #E5E7EB;
     }
 
-    /* Name prompt modal */
-    #name-modal {
+    /* Custom popup styles */
+    #custom-popup {
       position: fixed;
       top: 0;
       left: 0;
@@ -74,24 +78,26 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      z-index: 1000;
     }
-    #name-modal-content {
+    #custom-popup-content {
       background: white;
       padding: 20px;
       border-radius: 8px;
       width: 300px;
       text-align: center;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
-    .dark-mode #name-modal-content {
+    .dark-mode #custom-popup-content {
       background: #374151;
       color: #F3F4F6;
     }
   </style>
 </head>
 <body>
-  <!-- Name Prompt Modal -->
-  <div id="name-modal" class="${getCookie("userName") ? "hidden" : ""}">
-    <div id="name-modal-content" class="bg-white rounded-lg shadow-lg p-6">
+  <!-- Custom Popup -->
+  <div id="custom-popup">
+    <div id="custom-popup-content" class="bg-white rounded-lg shadow-lg p-6">
       <h2 class="text-xl font-bold mb-4">Welcome to DeepSeek Chat!</h2>
       <p class="mb-4">Please enter your name to get started:</p>
       <input
