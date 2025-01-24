@@ -54,7 +54,7 @@ function displayChat() {
       <div class="mb-4">
         <div class="${msg.role === "user" ? "text-right" : "text-left"}">
           <span class="inline-block px-4 py-2 rounded-lg ${msg.role === "user" ? "bg-blue-500 text-white message-user" : "bg-gray-200 text-gray-800 message-ai"}">
-            <strong>${msg.role === "user" ? userName : "AI"}:</strong> ${msg.content}
+            <strong>${msg.role === "user" ? userName : "Munir"}:</strong> ${msg.content}
           </span>
         </div>
       </div>
@@ -78,7 +78,7 @@ async function sendMessage(message) {
     body: JSON.stringify({
       model: "deepseek-chat", // Model name
       messages: [
-        { role: "system", content: "You are a helpful assistant." }, // System message
+        { role: "system", content: "You are a helpful assistant. Your name is Munir, your wife is Rita, she works as a cleaner. You have 3 kids, Lord, Lion, and Theresa. Lord has autism and loves lea. Lion is cool and Theresa is very beautiful." }, // System message
         ...chatHistory, // Include chat history
       ],
       stream: false // Disable streaming for simplicity
