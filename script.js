@@ -4,6 +4,9 @@ const API_URL = "https://api.deepseek.com/chat/completions"; // Correct API endp
 const chatDiv = document.getElementById("chat");
 const inputField = document.getElementById("input");
 const themeToggle = document.getElementById("theme-toggle");
+const nameModal = document.getElementById("name-modal");
+const nameInput = document.getElementById("name-input");
+const nameSubmit = document.getElementById("name-submit");
 
 let userName = "";
 let isDarkMode = false;
@@ -11,13 +14,21 @@ let isDarkMode = false;
 // Load chat history from cookies
 let chatHistory = getCookie("chatHistory") ? JSON.parse(getCookie("chatHistory")) : [];
 
-// Ask for user's name if not already set
+// Show name prompt if no name is set
 if (!getCookie("userName")) {
-  userName = prompt("Please enter your name:");
-  setCookie("userName", userName, 365); // Save name for 1 year
-} else {
-  userName = getCookie("userName");
+  nameModal.classList.remove("hidden");
 }
+
+// Handle name submission
+nameSubmit.addEventListener("click", () => {
+  userName = nameInput.value.trim();
+  if (userName) {
+    setCookie("userName", userName, 365); // Save name for 1 year
+    nameModal.classList.add("hidden");
+  } else {
+    alert("Please enter a valid name.");
+  }
+});
 
 // Display chat history
 function displayChat() {
@@ -87,6 +98,7 @@ themeToggle.addEventListener("click", () => {
   document.body.classList.toggle("dark-mode", isDarkMode);
   document.querySelector(".chat-box").classList.toggle("dark-mode", isDarkMode);
   document.querySelector(".input-box").classList.toggle("dark-mode", isDarkMode);
+  document.querySelector("#input").classList.toggle("dark-mode", isDarkMode);
   themeToggle.textContent = isDarkMode ? "☀️" : "🌙";
 });
 
