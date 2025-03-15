@@ -1,4 +1,4 @@
-const API_KEY = "sk-f598e1c2ef704eb7880b2067af3bc32d"; // Your DeepSeek API key
+const API_KEY = ""; // Your DeepSeek API key
 const API_URL = "https://api.deepseek.com/chat/completions"; // Correct API endpoint
 
 const chatDiv = document.getElementById("chat");
